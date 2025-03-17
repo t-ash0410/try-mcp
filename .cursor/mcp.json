@@ -13,6 +13,16 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
+    },
+    "notion": {
+      "command": "bun",
+      "args": [
+        "run",
+        "notion-mcp-server/index.ts"
+      ],
+      "env": {
+        "NOTION_API_KEY": "${NOTION_API_KEY}"
+      }
     }
   }
 }
