@@ -77,38 +77,63 @@ export async function addDatabaseRow(
 }
 
 async function main() {
-  const parentPageId = process.env.NOTION_PARENT_PAGE_ID || "";
-  const testPageId = process.env.NOTION_TEST_PAGE_ID || "";
+  const args = process.argv.slice(2);
+  if (args.length < 3) {
+    console.error("Usage: bun run index.ts <command> <parentId> <title> [content]");
+    process.exit(1);
+  }
 
-  // テストページを作成
-  const page = await createPage(parentPageId, "Test Page", "This is a test page");
-  console.log("Created page:", page.id);
+  const [command, parentId, title, content = ""] = args;
 
-  // データベースを作成
-  const database = await createDatabase(testPageId, "Test Database", {
-    Name: { title: {} },
-    Status: { select: { options: [{ name: "Not started" }] } },
-  });
-  console.log("Created database:", database.id);
+  // 必須パラメータのチェック
+  if (!parentId || !title) {
+    console.error("Error: parentId and title are required");
+    process.exit(1);
+  }
 
-  // データベースに行を追加
-  const row = await addDatabaseRow(database.id, {
-    Name: {
-      title: [
-        {
-          text: {
-            content: "Test Task",
+  try {
+    switch (command) {
+      case "createPage": {
+        const page = await createPage(parentId, title, content);
+        console.log("Created page:", page.id);
+        break;
+      }
+      case "createDatabase": {
+        const database = await createDatabase(parentId, title, {
+          Name: { title: {} },
+          Status: { select: { options: [{ name: "Not started" }] } },
+        });
+        console.log("Created database:", database.id);
+        break;
+      }
+      case "addDatabaseRow": {
+        const row = await addDatabaseRow(parentId, {
+          Name: {
+            title: [
+              {
+                text: {
+                  content: title,
+                },
+              },
+            ],
           },
-        },
-      ],
-    },
-    Status: {
-      select: {
-        name: "Not started",
-      },
-    },
-  });
-  console.log("Added row:", row.id);
+          Status: {
+            select: {
+              name: "Not started",
+            },
+          },
+        });
+        console.log("Added row:", row.id);
+        break;
+      }
+      default:
+        console.error("Unknown command:", command);
+        process.exit(1);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    process.exit(1);
+  }
 }
 
 if (import.meta.main) {
