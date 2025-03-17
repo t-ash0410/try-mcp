@@ -7,8 +7,7 @@
     "test": "bun --env-file=.env.test test"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "bun-test": "latest"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
