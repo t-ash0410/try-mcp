@@ -85,6 +85,12 @@ async function main() {
 
   const [command, parentId, title, content = ""] = args;
 
+  // 必須パラメータのチェック
+  if (!parentId || !title) {
+    console.error("Error: parentId and title are required");
+    process.exit(1);
+  }
+
   try {
     switch (command) {
       case "createPage": {
