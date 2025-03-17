@@ -1,0 +1,3 @@
+use flake
+
+export GITHUB_PERSONAL_ACCESS_TOKEN=<YOUR PAT>
