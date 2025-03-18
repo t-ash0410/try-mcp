@@ -14,8 +14,6 @@ mock.module("./notion-client", () => ({
 }));
 
 // コンソール出力のモック
-const originalConsoleLog = console.log;
-const originalConsoleError = console.error;
 const mockConsoleLog = mock(() => {});
 const mockConsoleError = mock(() => {});
 

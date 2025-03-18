@@ -30,6 +30,7 @@ const mockNotionClient = {
         public_url: "https://www.notion.so/test-page-id",
       } as MockPageResponse);
     }),
+    // 型を満たすために必要な空のモック
     retrieve: mock(() => Promise.resolve({} as MockPageResponse)),
     update: mock(() => Promise.resolve({} as MockPageResponse)),
     properties: {
@@ -59,6 +60,7 @@ const mockNotionClient = {
         public_url: "https://www.notion.so/test-database-id",
       } as MockDatabaseResponse);
     }),
+    // 型を満たすために必要な空のモック
     list: mock(() => Promise.resolve({} as ListDatabasesResponse)),
     retrieve: mock(() => Promise.resolve({} as MockDatabaseResponse)),
     query: mock(() => Promise.resolve({} as QueryDatabaseResponse)),
