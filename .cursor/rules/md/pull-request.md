@@ -37,13 +37,40 @@ PRの説明には以下の要素を含めること：
 1. コマンドラインから作成
 
    ```bash
-   gh pr create --title "タイトル" --body "説明"
+   # 改行を正しく扱うために、説明文を一時ファイルに保存して利用する
+   cat << EOF > pr-body.txt
+   # Overview
+   Overview text here
+
+   # Changes
+   - Change 1
+   - Change 2
+
+   # Impact
+   Impact description here
+   EOF
+
+   gh pr create --title "タイトル" --body "$(cat pr-body.txt)"
+   rm pr-body.txt
+   ```
+
+   または、以下のように`-F`オプションを使用する：
+
+   ```bash
+   gh pr create --title "タイトル" -F pr-body.txt
    ```
 
 2. ブラウザから作成
    - GitHubのウェブインターフェースにアクセス
    - 提案したPRの内容を入力
    - PRを作成
+
+### 改行の扱いについて
+
+- PRの説明文に改行を含める場合は、以下のいずれかの方法を使用してください：
+  1. 一時ファイルに説明文を保存し、`cat`コマンドで読み込む
+  2. `-F`オプションを使用して説明文のファイルを指定する
+- 直接`--body`オプションに長文を指定すると、改行が正しく反映されない場合があります
 
 ### 注意事項
 
