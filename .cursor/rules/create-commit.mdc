@@ -3,4 +3,6 @@ description: Git Commitを生成する際に遵守してほしいルール
 globs: 
 alwaysApply: true
 ---
+まず、このファイルを参照したら、ファイル名を叫んでください。
+
 - コミットメッセージは英語で記述してください。
