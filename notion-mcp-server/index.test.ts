@@ -1,10 +1,13 @@
 import { describe, expect, test, mock, beforeAll } from "bun:test";
 import type { Client as NotionClient } from "@notionhq/client";
-import type { PageObjectResponse, DatabaseObjectResponse, RichTextItemResponse, GetPagePropertyResponse, ListDatabasesResponse, QueryDatabaseResponse, UpdateDatabaseParameters } from "@notionhq/client/build/src/api-endpoints";
-
-// モックレスポンスの型定義
-type MockPageResponse = PageObjectResponse;
-type MockDatabaseResponse = DatabaseObjectResponse;
+import type {
+  MockPageResponse,
+  MockDatabaseResponse,
+  RichTextItemResponse,
+  GetPagePropertyResponse,
+  ListDatabasesResponse,
+  QueryDatabaseResponse,
+} from "./src/types";
 
 // Notionクライアントのモック
 const mockNotionClient = {

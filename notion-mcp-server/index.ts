@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import type { CreateDatabaseParameters, CreatePageParameters } from "@notionhq/client/build/src/api-endpoints";
+import type { NotionPageProperties, NotionDatabaseProperties } from "./src/types";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -47,7 +48,7 @@ export async function createPage(
 export async function createDatabase(
   parentId: string,
   title: string,
-  properties: CreateDatabaseParameters["properties"]
+  properties: NotionDatabaseProperties
 ) {
   const response = await notion.databases.create({
     parent: { page_id: parentId },
@@ -66,7 +67,7 @@ export async function createDatabase(
 
 export async function addDatabaseRow(
   databaseId: string,
-  properties: CreatePageParameters["properties"]
+  properties: NotionPageProperties
 ) {
   const response = await notion.pages.create({
     parent: { database_id: databaseId },
