@@ -7,7 +7,7 @@ import type {
   GetPagePropertyResponse,
   ListDatabasesResponse,
   QueryDatabaseResponse,
-} from "./src/types";
+} from "./types";
 
 // Notionクライアントのモック
 const mockNotionClient = {

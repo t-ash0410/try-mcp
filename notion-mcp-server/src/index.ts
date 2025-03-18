@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
 import type { CreateDatabaseParameters, CreatePageParameters } from "@notionhq/client/build/src/api-endpoints";
-import type { NotionPageProperties, NotionDatabaseProperties } from "./src/types";
+import type { NotionPageProperties, NotionDatabaseProperties } from "./types";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
