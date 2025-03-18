@@ -1,190 +1,111 @@
-import { describe, expect, test, mock, beforeAll } from "bun:test";
-import type { Client as NotionApiClient } from "@notionhq/client";
-import type {
-  MockPageResponse,
-  MockDatabaseResponse,
-  RichTextItemResponse,
-  GetPagePropertyResponse,
-  ListDatabasesResponse,
-  QueryDatabaseResponse,
-} from "./types";
+import { describe, expect, test, mock, beforeAll, afterEach } from "bun:test";
 
-// Notionクライアントのモック
-const mockNotionClient = {
-  pages: {
-    create: mock((params) => {
-      return Promise.resolve<MockPageResponse>({
-        id: "test-page-id",
-        object: "page",
-        created_time: new Date().toISOString(),
-        last_edited_time: new Date().toISOString(),
-        parent: params.parent,
-        archived: false,
-        url: "https://www.notion.so/test-page-id",
-        properties: {},
-        icon: null,
-        cover: null,
-        created_by: { id: "test-user-id", object: "user" },
-        last_edited_by: { id: "test-user-id", object: "user" },
-        in_trash: false,
-        public_url: "https://www.notion.so/test-page-id",
-      } as MockPageResponse);
-    }),
-    retrieve: mock(() => Promise.resolve({} as MockPageResponse)),
-    update: mock(() => Promise.resolve({} as MockPageResponse)),
-    properties: {
-      get: mock(() => Promise.resolve({} as GetPagePropertyResponse)),
-      retrieve: mock(() => Promise.resolve({} as GetPagePropertyResponse)),
-    },
+// NotionClientのモック
+const mockCreatePage = mock(() => Promise.resolve({ id: "test-page-id" }));
+const mockCreateDatabase = mock(() => Promise.resolve({ id: "test-database-id" }));
+const mockAddDatabaseRow = mock(() => Promise.resolve({ id: "test-row-id" }));
+
+mock.module("./notion-client", () => ({
+  notionClient: {
+    createPage: mockCreatePage,
+    createDatabase: mockCreateDatabase,
+    addDatabaseRow: mockAddDatabaseRow,
   },
-  databases: {
-    create: mock((params) => {
-      return Promise.resolve<MockDatabaseResponse>({
-        id: "test-database-id",
-        object: "database",
-        created_time: new Date().toISOString(),
-        last_edited_time: new Date().toISOString(),
-        parent: params.parent,
-        archived: false,
-        url: "https://www.notion.so/test-database-id",
-        properties: params.properties,
-        icon: null,
-        cover: null,
-        created_by: { id: "test-user-id", object: "user" },
-        last_edited_by: { id: "test-user-id", object: "user" },
-        title: [{ type: "text", text: { content: "Test Database", link: null } }] as RichTextItemResponse[],
-        description: [],
-        is_inline: false,
-        in_trash: false,
-        public_url: "https://www.notion.so/test-database-id",
-      } as MockDatabaseResponse);
-    }),
-    list: mock(() => Promise.resolve({} as ListDatabasesResponse)),
-    retrieve: mock(() => Promise.resolve({} as MockDatabaseResponse)),
-    query: mock(() => Promise.resolve({} as QueryDatabaseResponse)),
-    update: mock(() => Promise.resolve({} as MockDatabaseResponse)),
-  },
-};
+}));
 
-// @notionhq/clientのモック
-mock.module("@notionhq/client", () => {
-  class MockClient implements Partial<NotionApiClient> {
-    pages = mockNotionClient.pages;
-    databases = mockNotionClient.databases;
-  }
-  return { Client: MockClient };
-});
+// コンソール出力のモック
+const originalConsoleLog = console.log;
+const originalConsoleError = console.error;
+const mockConsoleLog = mock(() => {});
+const mockConsoleError = mock(() => {});
 
-// テスト対象のモジュールをインポート
-const { createPage, createDatabase, addDatabaseRow } = await import("./index");
-
-describe("Notion MCP Server", () => {
+describe("CLI", () => {
   beforeAll(() => {
-    // テスト環境用の環境変数を設定
+    // コンソール出力をモック化
+    console.log = mockConsoleLog;
+    console.error = mockConsoleError;
     process.env.NOTION_API_KEY = "test-api-key";
   });
 
-  test("createPage", async () => {
-    const result = await createPage(
-      "test-parent-id",
-      "Test Page",
-      "Test Content"
-    );
+  afterEach(() => {
+    // モックをリセット
+    mockCreatePage.mockClear();
+    mockCreateDatabase.mockClear();
+    mockAddDatabaseRow.mockClear();
+    mockConsoleLog.mockClear();
+    mockConsoleError.mockClear();
+  });
 
-    expect(result).toBeDefined();
-    expect(result.id).toBe("test-page-id");
-    expect(mockNotionClient.pages.create).toHaveBeenCalledWith({
-      parent: { page_id: "test-parent-id" },
-      properties: {
-        title: {
+  test("createPage command", async () => {
+    process.argv = ["bun", "index.ts", "createPage", "parent-id", "Test Page", "Test Content"];
+    await import("./index");
+
+    expect(mockCreatePage).toHaveBeenCalledWith("parent-id", "Test Page", "Test Content");
+    expect(mockConsoleLog).toHaveBeenCalledWith("Created page:", "test-page-id");
+  });
+
+  test("createDatabase command", async () => {
+    process.argv = ["bun", "index.ts", "createDatabase", "parent-id", "Test Database"];
+    await import("./index");
+
+    expect(mockCreateDatabase).toHaveBeenCalledWith(
+      "parent-id",
+      "Test Database",
+      {
+        Name: {
+          title: {},
+          type: "title",
+        },
+        Status: {
+          select: {
+            options: [{ name: "Not started" }],
+          },
+          type: "select",
+        },
+      }
+    );
+    expect(mockConsoleLog).toHaveBeenCalledWith("Created database:", "test-database-id");
+  });
+
+  test("addDatabaseRow command", async () => {
+    process.argv = ["bun", "index.ts", "addDatabaseRow", "database-id", "Test Task"];
+    await import("./index");
+
+    expect(mockAddDatabaseRow).toHaveBeenCalledWith(
+      "database-id",
+      {
+        Name: {
           title: [
             {
               text: {
-                content: "Test Page",
+                content: "Test Task",
               },
             },
           ],
         },
-      },
-      children: [
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: {
-                  content: "Test Content",
-                },
-              },
-            ],
+        Status: {
+          select: {
+            name: "Not started",
           },
         },
-      ],
-    });
-  });
-
-  test("createDatabase", async () => {
-    const properties = {
-      Name: {
-        title: {},
-        type: "title" as const,
-      },
-      Status: {
-        select: {
-          options: [{ name: "Not started" }],
-        },
-        type: "select" as const,
-      },
-    };
-
-    const result = await createDatabase(
-      "test-parent-id",
-      "Test Database",
-      properties
+      }
     );
-
-    expect(result).toBeDefined();
-    expect(result.id).toBe("test-database-id");
-    expect(mockNotionClient.databases.create).toHaveBeenCalledWith({
-      parent: { page_id: "test-parent-id" },
-      title: [
-        {
-          text: {
-            content: "Test Database",
-          },
-        },
-      ],
-      properties,
-    });
+    expect(mockConsoleLog).toHaveBeenCalledWith("Added row:", "test-row-id");
   });
 
-  test("addDatabaseRow", async () => {
-    const properties = {
-      Name: {
-        title: [
-          {
-            text: {
-              content: "Test Task",
-            },
-          },
-        ],
-      },
-      Status: {
-        select: {
-          name: "Not started",
-        },
-      },
-    };
+  test("invalid command", async () => {
+    process.argv = ["bun", "index.ts", "invalidCommand", "parent-id", "Test"];
+    await import("./index");
 
-    const result = await addDatabaseRow("test-database-id", properties);
+    expect(mockConsoleError).toHaveBeenCalledWith("Unknown command:", "invalidCommand");
+  });
 
-    expect(result).toBeDefined();
-    expect(result.id).toBe("test-page-id");
-    expect(mockNotionClient.pages.create).toHaveBeenCalledWith({
-      parent: { database_id: "test-database-id" },
-      properties,
-    });
+  test("missing arguments", async () => {
+    process.argv = ["bun", "index.ts", "createPage"];
+    await import("./index");
+
+    expect(mockConsoleError).toHaveBeenCalledWith(
+      "Usage: bun run index.ts <command> <parentId> <title> [content]"
+    );
   });
 }); 

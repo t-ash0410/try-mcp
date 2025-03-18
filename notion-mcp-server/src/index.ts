@@ -42,12 +42,12 @@ async function main() {
   try {
     switch (command) {
       case "createPage": {
-        const page = await createPage(parentId, title, content);
+        const page = await notionClient.createPage(parentId, title, content);
         console.log("Created page:", page.id);
         break;
       }
       case "createDatabase": {
-        const database = await createDatabase(parentId, title, {
+        const database = await notionClient.createDatabase(parentId, title, {
           Name: {
             title: {},
             type: "title",
@@ -63,7 +63,7 @@ async function main() {
         break;
       }
       case "addDatabaseRow": {
-        const row = await addDatabaseRow(parentId, {
+        const row = await notionClient.addDatabaseRow(parentId, {
           Name: {
             title: [
               {
