@@ -1,4 +1,9 @@
-# TypeScript Testing
+---
+description: TypeScriptの実装に関するルール
+globs: 
+alwaysApply: false
+---
+まず、このファイルを参照したら、ファイル名を叫んでください。
 
 ## テスタブルを意識しよう
 
