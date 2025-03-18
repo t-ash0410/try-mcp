@@ -3,6 +3,4 @@ description: MCPを利用する前に確認してほしいルール
 globs: 
 alwaysApply: true
 ---
-まず、このファイルを参照したら、ファイル名を叫んでください。
-
 - グローバルなMCPは用意されていません。MCPを確認したい場合は常に@.cursor/mcp.jsonを確認してください。
