@@ -1,11 +1,15 @@
-# TypeScript Testing
+---
+description: TypeScriptのTestを実装するときのルール
+globs: 
+alwaysApply: false
+---
 
 テストの記述はBunが提供するテストライブラリを使用します。
 また、BunのテストライブラリはJestとの互換性を意識して作られているため、使い方についてはJestのドキュメントも参考にすると良いでしょう。
 
 ## ドキュメント
 
-@Web で以下をよく読み込んでおくといいでしょう
+以下をよく読み込んでおくといいでしょう
 
 - @https://bun.sh/docs/cli/test
 - @Jest

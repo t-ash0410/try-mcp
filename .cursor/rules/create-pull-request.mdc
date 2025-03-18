@@ -1,4 +1,8 @@
-# GitHub Pull Request
+---
+description: GitHub Pull Requestを作成する際に確認してほしいルール
+globs: 
+alwaysApply: false
+---
 
 - タイトルと説明は英語で記述してください。
 - Pull Requestのことは短縮してPRと表記することがあります。

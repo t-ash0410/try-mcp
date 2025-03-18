@@ -1,4 +1,8 @@
-# TypeScript Testing
+---
+description: TypeScriptの実装に関するルール
+globs: 
+alwaysApply: false
+---
 
 ## テスタブルを意識しよう
 

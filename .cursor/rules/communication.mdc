@@ -1,11 +1,8 @@
 ---
-description: 
+description: ユーザーとChatのやり取りを行う際に遵守してほしいルール
 globs: 
 alwaysApply: true
 ---
-
-# Project Rules
-
 ## アクションの実行前の確認
 
 - ユーザーから具体的なアクションを要求されていない場合（例：「どうしたらいいと思う？」「プランを立てて」など）、
@@ -58,25 +55,3 @@ alwaysApply: true
 3. `index.test.ts` のテストケースを新しい型定義に合わせて更新
 
 これらの変更を実行してもよろしいでしょうか？」
-
-## アクション個別のルール群
-
-以下に、それぞれの操作やツールについてのルールを記述してあります。
-項目名と該当するマークダウンファイルで表現されているので、それぞれの項目に関連する操作を行う場合は一読してください。
-
-- Shell
-  - [shell.md](mdc:.cursor/rules/md/shell.md)
-- MCPについて
-  - [mcp.md](mdc:.cursor/rules/md/mcp.md)
-- ブランチ
-  - [branch.md](mdc:.cursor/rules/md/branch.md)
-- Commit
-  - [commit.md](mdc:.cursor/rules/md/commit.md)
-- GitHub Pull Request
-  - [pull-request.md](mdc:.cursor/rules/md/pull-request.md)
-- ツールのインストールについて
-  - [tool-install.md](mdc:.cursor/rules/md/tool-install.md).md
-- TypeScriptの実装
-  - [typescript-impl.md](mdc:.cursor/rules/md/typescript-impl.md)
-- TypeScriptのテスト
-  - [typescript-test.md](mdc:.cursor/rules/md/typescript-test.md)
