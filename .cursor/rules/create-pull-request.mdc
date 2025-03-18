@@ -16,26 +16,6 @@ alwaysApply: false
 - [ ] 変更がリモートにプッシュされていること
 - [ ] ブランチ名が適切であること
 
-### PRの内容
-
-PRの説明には以下の要素を含めること：
-
-1. 概要
-   - 変更の目的
-   - 主な変更内容
-2. 変更内容
-   - 変更したファイル
-   - 具体的な変更点
-3. 変更理由
-   - なぜこの変更が必要なのか
-   - どのような問題を解決するのか
-4. 影響範囲
-   - 変更による影響を受ける範囲
-   - 依存関係の変更
-5. テスト
-   - 実施したテスト
-   - 確認した項目
-
 ### PRの作成方法
 
 以下のような方法でPRを作成してください。
@@ -50,8 +30,15 @@ Overview text here
 - Change 1
 - Change 2
 
+# Why
+Why you made this change here
+
 # Impact
 Impact description here
+
+# Test
+- Test 1
+- Test 2
 EOF
 
 gh pr create --title "タイトル" -F pr-body.txt
