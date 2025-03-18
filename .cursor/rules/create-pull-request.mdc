@@ -3,9 +3,11 @@ description: GitHub Pull Requestを作成する際に確認してほしいルー
 globs: 
 alwaysApply: false
 ---
+## 基本的なルール
+
 - タイトルと説明は英語で記述してください。
 - Pull Requestのことは短縮してPRと表記することがあります。
-- Pull Request関連の操作は`gh`コマンドを利用してください。
+- Pull Requestを作成する場合は、`gh`コマンドを利用してください。
 
 ## PRの作成手順
 
