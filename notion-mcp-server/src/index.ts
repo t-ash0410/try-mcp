@@ -1,28 +1,4 @@
-import type { NotionPageProperties, NotionDatabaseProperties } from "./types";
 import { notionClient } from "./notion-client";
-
-export async function createPage(
-  parentId: string,
-  title: string,
-  content: string
-) {
-  return await notionClient.createPage(parentId, title, content);
-}
-
-export async function createDatabase(
-  parentId: string,
-  title: string,
-  properties: NotionDatabaseProperties
-) {
-  return await notionClient.createDatabase(parentId, title, properties);
-}
-
-export async function addDatabaseRow(
-  databaseId: string,
-  properties: NotionPageProperties
-) {
-  return await notionClient.addDatabaseRow(databaseId, properties);
-}
 
 async function main() {
   const args = process.argv.slice(2);
