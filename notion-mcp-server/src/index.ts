@@ -1,81 +1,4 @@
-import { Client } from "@notionhq/client";
-import type { CreateDatabaseParameters, CreatePageParameters } from "@notionhq/client/build/src/api-endpoints";
-import type { NotionPageProperties, NotionDatabaseProperties } from "./types";
-
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-});
-
-export async function createPage(
-  parentId: string,
-  title: string,
-  content: string
-) {
-  const response = await notion.pages.create({
-    parent: { page_id: parentId },
-    properties: {
-      title: {
-        title: [
-          {
-            text: {
-              content: title,
-            },
-          },
-        ],
-      },
-    },
-    children: [
-      {
-        object: "block",
-        type: "paragraph",
-        paragraph: {
-          rich_text: [
-            {
-              type: "text",
-              text: {
-                content: content,
-              },
-            },
-          ],
-        },
-      },
-    ],
-  });
-
-  return response;
-}
-
-export async function createDatabase(
-  parentId: string,
-  title: string,
-  properties: NotionDatabaseProperties
-) {
-  const response = await notion.databases.create({
-    parent: { page_id: parentId },
-    title: [
-      {
-        text: {
-          content: title,
-        },
-      },
-    ],
-    properties: properties,
-  });
-
-  return response;
-}
-
-export async function addDatabaseRow(
-  databaseId: string,
-  properties: NotionPageProperties
-) {
-  const response = await notion.pages.create({
-    parent: { database_id: databaseId },
-    properties: properties,
-  });
-
-  return response;
-}
+import { notionClient } from "./notion-client";
 
 async function main() {
   const args = process.argv.slice(2);
@@ -95,20 +18,28 @@ async function main() {
   try {
     switch (command) {
       case "createPage": {
-        const page = await createPage(parentId, title, content);
+        const page = await notionClient.createPage(parentId, title, content);
         console.log("Created page:", page.id);
         break;
       }
       case "createDatabase": {
-        const database = await createDatabase(parentId, title, {
-          Name: { title: {} },
-          Status: { select: { options: [{ name: "Not started" }] } },
+        const database = await notionClient.createDatabase(parentId, title, {
+          Name: {
+            title: {},
+            type: "title",
+          },
+          Status: {
+            select: {
+              options: [{ name: "Not started" }],
+            },
+            type: "select",
+          },
         });
         console.log("Created database:", database.id);
         break;
       }
       case "addDatabaseRow": {
-        const row = await addDatabaseRow(parentId, {
+        const row = await notionClient.addDatabaseRow(parentId, {
           Name: {
             title: [
               {
