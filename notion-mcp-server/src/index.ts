@@ -1,48 +1,12 @@
-import { Client } from "@notionhq/client";
-import type { CreateDatabaseParameters, CreatePageParameters } from "@notionhq/client/build/src/api-endpoints";
 import type { NotionPageProperties, NotionDatabaseProperties } from "./types";
-
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-});
+import { notionClient } from "./notion-client";
 
 export async function createPage(
   parentId: string,
   title: string,
   content: string
 ) {
-  const response = await notion.pages.create({
-    parent: { page_id: parentId },
-    properties: {
-      title: {
-        title: [
-          {
-            text: {
-              content: title,
-            },
-          },
-        ],
-      },
-    },
-    children: [
-      {
-        object: "block",
-        type: "paragraph",
-        paragraph: {
-          rich_text: [
-            {
-              type: "text",
-              text: {
-                content: content,
-              },
-            },
-          ],
-        },
-      },
-    ],
-  });
-
-  return response;
+  return await notionClient.createPage(parentId, title, content);
 }
 
 export async function createDatabase(
@@ -50,31 +14,14 @@ export async function createDatabase(
   title: string,
   properties: NotionDatabaseProperties
 ) {
-  const response = await notion.databases.create({
-    parent: { page_id: parentId },
-    title: [
-      {
-        text: {
-          content: title,
-        },
-      },
-    ],
-    properties: properties,
-  });
-
-  return response;
+  return await notionClient.createDatabase(parentId, title, properties);
 }
 
 export async function addDatabaseRow(
   databaseId: string,
   properties: NotionPageProperties
 ) {
-  const response = await notion.pages.create({
-    parent: { database_id: databaseId },
-    properties: properties,
-  });
-
-  return response;
+  return await notionClient.addDatabaseRow(databaseId, properties);
 }
 
 async function main() {
@@ -101,8 +48,16 @@ async function main() {
       }
       case "createDatabase": {
         const database = await createDatabase(parentId, title, {
-          Name: { title: {} },
-          Status: { select: { options: [{ name: "Not started" }] } },
+          Name: {
+            title: {},
+            type: "title",
+          },
+          Status: {
+            select: {
+              options: [{ name: "Not started" }],
+            },
+            type: "select",
+          },
         });
         console.log("Created database:", database.id);
         break;

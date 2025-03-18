@@ -1,5 +1,5 @@
 import { describe, expect, test, mock, beforeAll } from "bun:test";
-import type { Client as NotionClient } from "@notionhq/client";
+import type { Client as NotionApiClient } from "@notionhq/client";
 import type {
   MockPageResponse,
   MockDatabaseResponse,
@@ -68,7 +68,7 @@ const mockNotionClient = {
 
 // @notionhq/clientのモック
 mock.module("@notionhq/client", () => {
-  class MockClient implements Partial<NotionClient> {
+  class MockClient implements Partial<NotionApiClient> {
     pages = mockNotionClient.pages;
     databases = mockNotionClient.databases;
   }
@@ -127,8 +127,16 @@ describe("Notion MCP Server", () => {
 
   test("createDatabase", async () => {
     const properties = {
-      Name: { title: {} },
-      Status: { select: { options: [{ name: "Not started" }] } },
+      Name: {
+        title: {},
+        type: "title" as const,
+      },
+      Status: {
+        select: {
+          options: [{ name: "Not started" }],
+        },
+        type: "select" as const,
+      },
     };
 
     const result = await createDatabase(
