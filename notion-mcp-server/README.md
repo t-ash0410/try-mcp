@@ -25,21 +25,21 @@ NOTION_API_KEY=your_notion_api_key
 
 1. ページの作成:
 ```typescript
-import { createPage } from "./index.ts";
+import { createPage } from "./src/index";
 
 const page = await createPage("ページ名", "親ページID");
 ```
 
 2. データベースの作成:
 ```typescript
-import { createDatabase } from "./index.ts";
+import { createDatabase } from "./src/index";
 
 const database = await createDatabase("データベース名", "親ページID");
 ```
 
 3. データベースに行を追加:
 ```typescript
-import { addDatabaseRow } from "./index.ts";
+import { addDatabaseRow } from "./src/index";
 
 const row = await addDatabaseRow("データベースID", "行のタイトル");
 ```
