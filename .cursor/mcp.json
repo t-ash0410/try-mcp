@@ -18,7 +18,7 @@
       "command": "bun",
       "args": [
         "run",
-        "notion-mcp-server/index.ts"
+        "notion-mcp-server/src/index.ts"
       ],
       "env": {
         "NOTION_API_KEY": "${NOTION_API_KEY}"
