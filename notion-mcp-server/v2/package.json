@@ -9,5 +9,9 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "hono": "^4.7.4",
+    "neverthrow": "^8.2.0"
   }
 }
