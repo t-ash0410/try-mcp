@@ -26,6 +26,11 @@ export const createDBHandler = async (args: CreateDBArgs) => {
   return await notion.databases.create({
     parent: { page_id: NOTION_PARENT_ID },
     title: [{ text: { content: title } }],
-    properties: {},
+    properties: {
+      Name: {
+        title: {},
+        type: 'title',
+      },
+    },
   })
 }
