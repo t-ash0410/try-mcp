@@ -16,7 +16,7 @@ RUN bun install -p --frozen-lockfile
 
 # -----
 
-FROM oven/bun:distroless AS runner
+FROM oven/bun:debian AS runner
 
 COPY --from=installer /usr/src/app/node_modules ./node_modules
 
