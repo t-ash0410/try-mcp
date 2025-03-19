@@ -1,5 +1,5 @@
 {
-  "name": "v2",
+  "name": "notion-mcp-server-v2",
   "private": true,
   "scripts": {
     "dev": "bun run --hot src/app.ts",
