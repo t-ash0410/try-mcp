@@ -24,7 +24,7 @@
         "NOTION_API_KEY",
         "-e",
         "NOTION_PARENT_ID",
-        "notion-mcp-server/v2"
+        "notion-mcp-server-v2"
       ],
       "env": {
         "NOTION_API_KEY": "${NOTION_API_KEY}",
