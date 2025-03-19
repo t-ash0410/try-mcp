@@ -1,5 +1,5 @@
 {
-  "name": "v2",
+  "name": "notion-mcp-server-v2",
   "private": true,
   "scripts": {
     "dev": "bun run --hot src/app.ts",
@@ -14,7 +14,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "hono": "^4.7.4",
-    "neverthrow": "^8.2.0"
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "@notionhq/client": "^2.3.0"
   }
 }
