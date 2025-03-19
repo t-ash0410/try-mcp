@@ -1,8 +1,11 @@
 {
   "name": "v2",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun run --hot src/app.ts",
+    "check": "biome check",
+    "check:write": "biome check --write"
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest"
