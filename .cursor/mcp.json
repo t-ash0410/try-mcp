@@ -15,13 +15,20 @@
       }
     },
     "notion": {
-      "command": "bun",
+      "command": "docker",
       "args": [
         "run",
-        "notion-mcp-server/src/index.ts"
+        "-i",
+        "--rm",
+        "-e",
+        "NOTION_API_KEY",
+        "-e",
+        "NOTION_PARENT_ID",
+        "notion-mcp-server/v2"
       ],
       "env": {
-        "NOTION_API_KEY": "${NOTION_API_KEY}"
+        "NOTION_API_KEY": "${NOTION_API_KEY}",
+        "NOTION_PARENT_ID": "${NOTION_PARENT_ID}"
       }
     }
   }
